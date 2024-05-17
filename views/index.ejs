@@ -1,0 +1,101 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <ul>
+        <% tasks.forEach(task => { %>
+            <li><%= task.title %> - <%= task.description %> - <%= task.status %></li>
+
+            <a href="#" class="btn-update" onclick="edit_task('<%= task.id %>')">Update</a>
+            <a href="#" id="btn-delete" class="btn-delete" onclick="delete_task('<%= task.id %>')" >Delete</a>
+        <% }); %>
+
+        
+    
+    </ul>
+
+    <a href="/tasks/new" class="btn-create">Create New Task</a>
+
+    <script>
+
+function delete_task(id){
+
+        fetch(`/tasks/${id}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                
+                console.log('Task deleted successfully');
+               
+            } else {
+                throw new Error('Failed to delete task');
+            }
+        })
+        .catch(error => {
+            // Optionally handle error response
+            console.error('Error:', error);
+        });
+
+}
+
+//////////////////////////////////////////////////////
+function edit_task(id){
+
+fetch(`/tasks/${id}`, {
+    method: 'PUT'
+})
+.then(response => {
+    if (response.ok) {
+        
+        console.log('Task updated successfully');
+        
+    } else {
+        throw new Error('Failed to edit task');
+    }
+})
+.catch(error => {
+    // Optionally handle error response
+    console.error('Error:', error);
+});
+
+}
+
+
+//         const deleteButtons = document.getElementsById('btn-delete');
+//   deleteButtons.addEventListener('click', function(event) {
+//     event.preventDefault();
+//     alert('ff');
+
+    // const taskId = this.getAttribute('data-task-id');
+    // const confirmation = confirm('Are you sure you want to delete this task?');
+
+    // if (confirmation) {
+    //     fetch(`/tasks/${taskId}`, {
+    //         method: 'DELETE'
+    //     })
+    //     .then(response => {
+    //         if (response.ok) {
+    //             // Optionally handle success response
+    //             console.log('Task deleted successfully');
+    //             // Reload the page or update the task list as needed
+    //         } else {
+    //             throw new Error('Failed to delete task');
+    //         }
+    //     })
+    //     .catch(error => {
+    //         // Optionally handle error response
+    //         console.error('Error:', error);
+    //     });
+    // }
+// });
+    </script>
+</body>
+</html>
